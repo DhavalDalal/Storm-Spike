@@ -1,6 +1,6 @@
 ### Steps to run in production for Mac/Linux
 
-* Run zookepper on nimbus machine. 
+* Run zookeeper on nimbus machine. 
 
 	```
 	$ cd /usr/share/zookeeper/bin
