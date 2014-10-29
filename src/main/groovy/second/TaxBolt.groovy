@@ -12,7 +12,7 @@ class TaxBolt extends BaseRichBolt {
     private Map<String, Double> taxRates = [:]
     private OutputCollector collector
 
-    TaxBolt(taxRates = [:]) {
+    TaxBolt(taxRates) {
         this.taxRates = taxRates
     }
 

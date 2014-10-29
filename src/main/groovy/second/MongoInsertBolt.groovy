@@ -33,8 +33,6 @@ class MongoInsertBolt extends BaseRichBolt {
         this.collector = collector
         ServerAddress server = new ServerAddress(mongoUri, port)
         MongoClient mongo = new MongoClient(server)
-        println "MongoInsertBolt.prepare = $mongo"
-        println "MongoInsertBolt.prepare: getting DB = $dbName, Collection = $dbCollection"
         dbCollection = mongo.getDB(dbName).getCollection(collectionName)
     }
 
@@ -50,7 +48,7 @@ class MongoInsertBolt extends BaseRichBolt {
 
         def record = BasicDBObjectBuilder
                 .start()
-//                .add('ts', BSONTimestamp)
+                .add('ts', new Date())
                 .add('PropertyCode', input.getStringByField('PropertyCode'))
                 .add('source', input.getStringByField('source'))
                 .add('Stream', input.getStringByField('Stream'))

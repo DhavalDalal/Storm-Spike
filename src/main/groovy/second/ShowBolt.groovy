@@ -16,11 +16,10 @@ public class ShowBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple input) {
-        System.out.println(input)
+        println(input)
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-
     }
 }

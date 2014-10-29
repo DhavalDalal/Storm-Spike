@@ -8,8 +8,9 @@ import backtype.storm.tuple.Fields
 import backtype.storm.tuple.Values
 
 class XMLReaderSpout extends BaseRichSpout {
-    SpoutOutputCollector collector
-    String fileWithPathUri
+    private SpoutOutputCollector collector
+    private final String fileWithPathUri
+    private def Root
 
     XMLReaderSpout(String fileWithPathUri) {
         this.fileWithPathUri = fileWithPathUri
@@ -23,11 +24,11 @@ class XMLReaderSpout extends BaseRichSpout {
     @Override
     void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
         this.collector = collector
+        Root = new XmlSlurper().parse(fileWithPathUri)
     }
 
     @Override
     void nextTuple() {
-        def Root = new XmlSlurper().parse(fileWithPathUri)
         def allDataPoints = Root.DataPoint
         allDataPoints.each { dataPoint ->
             Values values = new Values(
