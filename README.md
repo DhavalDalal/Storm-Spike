@@ -18,12 +18,14 @@
     ```           
 
 * Start the nimbus daemon on master machine. 
+
 	```
       $ storm nimbus
 	```
 
 
-* Run `jps` command to check nimbus has started.
+* Run `jps` command to check nimbus start.
+
 	```
       $ jps
 
@@ -32,20 +34,23 @@
 	```
 
 * Start the supervisor daemon on worker machine. 
+
 	```
      $ storm supervisor
 	```
 	
- Run `jps` command to check supervisor has started.
-```
+* Run `jps` command to check supervisor start.
+
+    ```
       $ jps
 
       xxxx Jps
       yyyy supervisor
       zzzz nimbus
-```      
+    ```      
 
 * Run storm ui
+
     ```
       $ storm ui
     ```
