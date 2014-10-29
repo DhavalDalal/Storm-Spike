@@ -27,6 +27,14 @@ repositories {
     maven {
         url 'http://code.google.com/p/google-maven-repository'
     }
+
+    maven {
+        url 'http://oss.sonatype.org/content/repositories/github-releases'
+    }
+
+    maven {
+        url 'http://clojars.org/repo'
+    }
 }
 
 
