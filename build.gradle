@@ -5,13 +5,14 @@ apply plugin: 'idea'
 
 defaultTasks 'clean', 'build'
 
-sourceCompatibility = '1.6'
-targetCompatibility = '1.6'
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
 
 project.ext {
 
     //libs
     storm = 'org.apache.storm:storm-core:0.9.2-incubating'
+    mongoDriver = 'org.mongodb:mongo-java-driver:2.12.4'
     groovy = 'org.codehaus.groovy:groovy-all:2.0.5'
     commonsCli = 'commons-cli:commons-cli:1.1'
     log4j = 'log4j:log4j:1.2.17'
@@ -39,6 +40,6 @@ repositories {
 
 
 dependencies {
-    compile(project.ext.storm, project.ext.groovy, project.ext.commonsCli, project.ext.log4j)
+    compile(project.ext.mongoDriver, project.ext.storm, project.ext.groovy, project.ext.commonsCli, project.ext.log4j)
     testCompile(project.ext.hamcrest, project.ext.junit, project.ext.spock)
 }
