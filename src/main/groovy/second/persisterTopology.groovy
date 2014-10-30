@@ -1,5 +1,6 @@
 package second
 
+import second.rdbms.RDBMSBolt
 import backtype.storm.Config
 import backtype.storm.LocalCluster
 import backtype.storm.StormSubmitter
@@ -21,6 +22,9 @@ builder.setBolt('tax', new TaxBolt(taxRates), 2).shuffleGrouping('xml')
 //String mongoUri = args[1]
 builder.setBolt('mongoInsert', new MongoInsertBolt('localhost', 27017, 'test', 'dataPoints'), 2).shuffleGrouping('tax')
 builder.setBolt('show', new ShowBolt(), 1).shuffleGrouping('tax')
+
+builder.setBolt('mysql', new RDBMSBolt(), 1).shuffleGrouping('tax')
+
 
 Config conf = new Config()
 

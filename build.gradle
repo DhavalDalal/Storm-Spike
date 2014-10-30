@@ -16,6 +16,7 @@ project.ext {
     groovy = 'org.codehaus.groovy:groovy-all:2.0.5'
     commonsCli = 'commons-cli:commons-cli:1.1'
     log4j = 'log4j:log4j:1.2.17'
+    mysql = 'mysql:mysql-connector-java:5.1.16'
 
     //test-libs
     junit = 'junit:junit:4.8.1'
@@ -40,6 +41,6 @@ repositories {
 
 
 dependencies {
-    compile(project.ext.mongoDriver, project.ext.storm, project.ext.groovy, project.ext.commonsCli, project.ext.log4j)
+    compile(project.ext.mongoDriver, project.ext.storm, project.ext.groovy,project.ext.mysql, project.ext.commonsCli, project.ext.log4j)
     testCompile(project.ext.hamcrest, project.ext.junit, project.ext.spock)
 }
