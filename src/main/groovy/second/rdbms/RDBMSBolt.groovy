@@ -13,6 +13,7 @@ import java.sql.SQLException
 import java.sql.Statement
 
 public class RDBMSBolt extends BaseRichBolt {
+    private Connections = [:]
     private OutputCollector collector
 
 
@@ -42,19 +43,28 @@ public class RDBMSBolt extends BaseRichBolt {
 
     private void executeUpdate(String propertyCode , String query){
         try {
-            Connection con = getConnction(propertyCode)
+            Connection con = getConnection(propertyCode)
             Statement stmt = con.prepareStatement(query)
             stmt.executeUpdate(query) == 0 ? true : false;
             stmt.close();
-            con.close();
-
+            //con.close();
         } catch( SQLException e){
             e.printStackTrace()
         } catch (ClassNotFoundException e) {
             e.printStackTrace()
         }
     }
-    private Connection getConnction(String propertyCode) throws SQLException, ClassNotFoundException {
+
+    private Connection getConnection(String propertyCode){
+        if (null == Connections[propertyCode]){
+            println 'Not Found in the Map'
+            Connections[propertyCode] = getNewConnection(propertyCode)
+        }
+
+        Connections[propertyCode]
+    }
+
+    private Connection getNewConnection(String propertyCode) throws SQLException, ClassNotFoundException {
         Connection con
         Map<String, String> conDetails = lookUpConnectionDetails(propertyCode)
         RDBMSConnector connector = new MysqlRDBMSConnector()
