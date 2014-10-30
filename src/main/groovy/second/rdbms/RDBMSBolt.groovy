@@ -15,7 +15,7 @@ import java.sql.Statement
 public class RDBMSBolt extends BaseRichBolt {
     private Connections = [:]
     private OutputCollector collector
-
+    private queries = []
 
     @Override
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
@@ -34,7 +34,14 @@ public class RDBMSBolt extends BaseRichBolt {
                  |       '${input.getDoubleByField('value')}'
                  |);
                 """.stripMargin()
-        executeUpdate(input.getStringByField("PropertyCode"), query.toString())
+
+        queries.add(query)
+
+        if (100 == queries.size()) {
+            //executeUpdate(input.getStringByField("PropertyCode"), query.toString())
+            executeUpdate(input.getStringByField("PropertyCode"), query.toString())
+            queries = []
+        }
     }
 
     @Override
@@ -44,11 +51,17 @@ public class RDBMSBolt extends BaseRichBolt {
     private void executeUpdate(String propertyCode , String query){
         try {
             Connection con = getConnection(propertyCode)
-            Statement stmt = con.prepareStatement(query)
-            stmt.executeUpdate(query) == 0 ? true : false;
+            Statement stmt = con.createStatement()
+            queries.each { q ->
+                stmt.addBatch(q)
+            }
+
+
+            //stmt.executeUpdate(query) == 0 ? true : false;
+            stmt.executeBatch()
             stmt.close();
             //con.close();
-        } catch( SQLException e){
+        } catch( SQLException e ){
             e.printStackTrace()
         } catch (ClassNotFoundException e) {
             e.printStackTrace()
