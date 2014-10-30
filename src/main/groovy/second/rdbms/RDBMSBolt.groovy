@@ -30,7 +30,7 @@ public class RDBMSBolt extends BaseRichBolt {
                  |       '${input.getStringByField('Stream')}',
                  |       '${input.getStringByField('Qualifier')}',
                  |       '${input.getStringByField('DateTime')}',
-                 |       '${input.getStringByField('value')}'
+                 |       '${input.getDoubleByField('value')}'
                  |);
                 """.stripMargin()
         executeUpdate(input.getStringByField("PropertyCode"), query.toString())
