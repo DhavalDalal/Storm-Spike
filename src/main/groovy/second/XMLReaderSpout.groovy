@@ -29,17 +29,20 @@ class XMLReaderSpout extends BaseRichSpout {
 
     @Override
     void nextTuple() {
-        def allDataPoints = Root.DataPoint
-        allDataPoints.each { dataPoint ->
-            Values values = new Values(
-                dataPoint.@PropertyCode.text(),
-                dataPoint.@source.text(),
-                dataPoint.@Stream.text(),
-                dataPoint.@Qualifier.text(),
-                dataPoint.@DateTime.text(),
-                dataPoint.@value.text()
-            )
-            collector.emit(values)
+        if  (Root != null) {
+            def allDataPoints = Root.DataPoint
+            allDataPoints.each { dataPoint ->
+                Values values = new Values(
+                        dataPoint.@PropertyCode.text(),
+                        dataPoint.@source.text(),
+                        dataPoint.@Stream.text(),
+                        dataPoint.@Qualifier.text(),
+                        dataPoint.@DateTime.text(),
+                        dataPoint.@value.text()
+                )
+                collector.emit(values)
+            }
+            Root = null
         }
     }
 }

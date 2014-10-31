@@ -23,6 +23,7 @@ class TaxBolt extends BaseRichBolt {
 
     @Override
     void execute(Tuple input) {
+        println "Tax = ${input}"
         def propertyCode = input.getString(0)
         def source = input.getString(1)
         def stream = input.getString(2)

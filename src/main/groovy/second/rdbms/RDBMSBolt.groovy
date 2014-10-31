@@ -17,6 +17,9 @@ public class RDBMSBolt extends BaseRichBolt {
     private OutputCollector collector
     private queries = []
 
+    private prevQualifier = ""
+
+
     @Override
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
         this.collector = collector
@@ -37,11 +40,13 @@ public class RDBMSBolt extends BaseRichBolt {
 
         queries.add(query)
 
-        if (100 == queries.size()) {
+        if (prevQualifier != "" && prevQualifier != input.getStringByField("PropertyCode")) {
             //executeUpdate(input.getStringByField("PropertyCode"), query.toString())
             executeUpdate(input.getStringByField("PropertyCode"), query.toString())
             queries = []
         }
+
+        prevQualifier = input.getStringByField("PropertyCode");
     }
 
     @Override
