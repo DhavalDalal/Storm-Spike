@@ -5,4 +5,4 @@ build
 .project
 .gradle
 storm-local
-graddle.properties
+gradle.properties
