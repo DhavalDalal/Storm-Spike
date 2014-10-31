@@ -10,18 +10,19 @@ import backtype.storm.utils.Utils
 TopologyBuilder builder = new TopologyBuilder()
 
 String xmlDataFileUri = args[0]
-builder.setSpout('xml', new XMLReaderSpout(xmlDataFileUri), 2)
+builder.setSpout('xml', new XMLReaderSpout(xmlDataFileUri), 1)
 
 def taxRates = [
         'AAA' : 10.2,
         'BBB' : 20.3,
-        'CCC' : 30.4
+        'CCC' : 30.4,
+        'Roger! It is Over':0
 ]
 builder.setBolt('tax', new TaxBolt(taxRates), 2).shuffleGrouping('xml')
 
 //String mongoUri = args[1]
-builder.setBolt('mongoInsert', new MongoInsertBolt('localhost', 27017, 'test', 'dataPoints'), 2).shuffleGrouping('tax')
-builder.setBolt('show', new ShowBolt(), 1).shuffleGrouping('tax')
+//builder.setBolt('mongoInsert', new MongoInsertBolt('localhost', 27017, 'test', 'dataPoints'), 2).shuffleGrouping('tax')
+//builder.setBolt('show', new ShowBolt(), 1).shuffleGrouping('tax')
 
 builder.setBolt('mysql', new RDBMSBolt(), 1).shuffleGrouping('tax')
 

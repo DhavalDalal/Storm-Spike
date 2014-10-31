@@ -11,6 +11,7 @@ class XMLReaderSpout extends BaseRichSpout {
     private SpoutOutputCollector collector
     private final String fileWithPathUri
     private def Root
+    boolean itsOver = false;
 
     XMLReaderSpout(String fileWithPathUri) {
         this.fileWithPathUri = fileWithPathUri
@@ -29,8 +30,10 @@ class XMLReaderSpout extends BaseRichSpout {
 
     @Override
     void nextTuple() {
-        if  (Root != null) {
+        if  (!itsOver && Root != null) {
             def allDataPoints = Root.DataPoint
+
+            println "The XML size = ${allDataPoints.size()}"
             allDataPoints.each { dataPoint ->
                 Values values = new Values(
                         dataPoint.@PropertyCode.text(),
@@ -41,8 +44,14 @@ class XMLReaderSpout extends BaseRichSpout {
                         dataPoint.@value.text()
                 )
                 collector.emit(values)
+                itsOver = true
+                Root = null
             }
-            Root = null
+        } else if  (itsOver && Root == null) {
+                sleep(5000)
+                Values values = new Values("Roger! It is Over", "a", "b", "c", "d", "100")
+                collector.emit(values)
         }
+
     }
 }

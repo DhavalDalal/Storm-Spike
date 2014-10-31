@@ -27,8 +27,12 @@ public class RDBMSBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple input) {
-        def query =
-                """
+
+        def query = ""
+
+        if (input.getStringByField("PropertyCode") != "Roger! It is Over") {
+            query =
+                    """
                  |insert into test.DataPoints(source, stream, qualifier, datetime, value)
                  |values('${input.getStringByField('source')}',
                  |       '${input.getStringByField('Stream')}',
@@ -38,9 +42,11 @@ public class RDBMSBolt extends BaseRichBolt {
                  |);
                 """.stripMargin()
 
-        queries.add(query)
+            queries.add(query)
+        }
 
-        if (prevQualifier != "" && prevQualifier != input.getStringByField("PropertyCode")) {
+        if ((prevQualifier != "" && prevQualifier != input.getStringByField("PropertyCode"))
+            || input.getStringByField("PropertyCode") == "Roger! It is Over") {
             //executeUpdate(input.getStringByField("PropertyCode"), query.toString())
             executeUpdate(input.getStringByField("PropertyCode"), query.toString())
             queries = []
