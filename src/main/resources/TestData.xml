@@ -63,5 +63,4 @@
     <DataPoint PropertyCode="BBB" source="B" Stream="S2" Qualifier="X2" DateTime="2014-03-11" value="34" />
     <DataPoint PropertyCode="BBB" source="B" Stream="S2" Qualifier="X2" DateTime="2014-04-11" value="34" />
     <DataPoint PropertyCode="BBB" source="B" Stream="S2" Qualifier="X2" DateTime="2014-05-11" value="34" />
-
 </Root>
