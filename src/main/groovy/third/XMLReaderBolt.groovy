@@ -10,7 +10,6 @@ import backtype.storm.tuple.Tuple
 
 class XMLReaderBolt extends BaseRichBolt {
     private OutputCollector collector
-    private XmlSlurper xmlSlurper
 
     @Override
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {

@@ -17,7 +17,7 @@ import javax.jms.Session
 TopologyBuilder builder = new TopologyBuilder()
 
 def classpathAppContextResource = 'springJms-activemq.xml'
-ApplicationContext spring = new ClassPathXmlApplicationContext(classpathAppContextResource)
+def spring = new ClassPathXmlApplicationContext(classpathAppContextResource)
 
 def reqQueue = new JmsSpout()
 reqQueue.jmsProvider = new SpringJmsProvider(spring, 'jmsConnectionFactory', 'requestQueue')
