@@ -16,7 +16,8 @@ project.ext {
     groovy = 'org.codehaus.groovy:groovy-all:2.0.5'
     stormJms = 'com.github.ptgoetz:storm-jms:0.8.1'
     activemq = 'org.apache.activemq:activemq-all:5.10.0'
-    apacheXBean = 'org.apache.xbean:xbean-spring:3.7'
+    activemqSpring = 'org.apache.activemq:activemq-spring:5.10.0'
+    apacheXBean = 'org.apache.xbean:xbean-spring:4.1'
     springJms = 'org.springframework:spring-jms:4.1.1.RELEASE'
 
     commonsCli = 'commons-cli:commons-cli:1.1'
@@ -52,10 +53,20 @@ repositories {
 dependencies {
     compile(project.ext.mongoDriver, project.ext.storm, project.ext.stormJms, project.ext.activemq,
             project.ext.springJms, project.ext.apacheXBean, project.ext.groovy, project.ext.mysql,
-            project.ext.commonsCli, project.ext.log4j)
+            project.ext.activemqSpring, project.ext.commonsCli, project.ext.log4j)
     testCompile(project.ext.hamcrest, project.ext.junit, project.ext.spock)
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0'
+}
+
+jar {
+    from (configurations.compile.collect { it.isDirectory() ? it : zipTree(it) })
+    exclude('defaults.yaml')
+}
+
+
+task startStorm << {
+    println 'Starting Storm...'
 }

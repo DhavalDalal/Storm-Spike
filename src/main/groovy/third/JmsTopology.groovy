@@ -1,7 +1,6 @@
 package third
 
 import backtype.storm.contrib.jms.spout.JmsSpout
-import org.springframework.context.ApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
 import second.MongoInsertBolt
 import second.ShowBolt
@@ -10,11 +9,8 @@ import backtype.storm.Config
 import backtype.storm.LocalCluster
 import backtype.storm.StormSubmitter
 import backtype.storm.topology.TopologyBuilder
-import backtype.storm.utils.Utils
 
 import javax.jms.Session
-
-TopologyBuilder builder = new TopologyBuilder()
 
 def classpathAppContextResource = 'springJms-activemq.xml'
 def spring = new ClassPathXmlApplicationContext(classpathAppContextResource)
@@ -25,6 +21,7 @@ reqQueue.jmsTupleProducer = new JmsXmlTupleProducer()
 reqQueue.distributed = true //allow multiple instances
 reqQueue.jmsAcknowledgeMode = Session.CLIENT_ACKNOWLEDGE
 
+TopologyBuilder builder = new TopologyBuilder()
 //todo: try changing to parallelism to 2
 builder.setSpout('jms', reqQueue, 1)
 
@@ -46,10 +43,10 @@ builder.setBolt('show', new ShowBolt(), 1).shuffleGrouping('tax')
 
 Config conf = new Config()
 
-if (args != null && args.length > 2) {
+if (args != null && args.length >= 1) {
     conf.setNumWorkers(3)
     println('Starting on Remote Cluster...')
-    StormSubmitter.submitTopology(args[1], conf, builder.createTopology())
+    StormSubmitter.submitTopology(args[0], conf, builder.createTopology())
 } else {
     conf.setDebug(true)
     println('Starting on Local Cluster...')
