@@ -67,6 +67,25 @@ jar {
 }
 
 
-task startStorm << {
-    println 'Starting Storm...'
+task startStorm(description: 'This starts storm and its related components, but assumes Zookeeper is running.') << {
+    println '''
+             |Assuming Zookeeper is up and running...
+             |NOTE: In case you have not started Zookeeper, please start it:
+             |$ cd /usr/share/zookeeper/bin
+             |$ sudo ./zkServer.sh start
+             |
+             |To check whether Zookeeper is running...
+             |$ sudo ./zkServer.sh status
+             |
+            '''.stripMargin()
+
+    println 'Starting Nimbus on localhost...'
+    'storm nimbus'.execute()
+
+    println 'Starting Supervisor on localhost...'
+    'storm supervisor'.execute()
+
+    println 'Starting Storm UI...'
+    'storm ui'.execute()
+    println 'To access storm UI, please point your browser to http://localhost:8080'
 }
