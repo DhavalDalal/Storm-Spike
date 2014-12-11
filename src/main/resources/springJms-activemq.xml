@@ -12,6 +12,15 @@
     <bean id="requestQueue" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg index="0" value="req.queue"/>
     </bean>
+
+    <bean id="wsRequestQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="ws.req.queue"/>
+    </bean>
+
+    <bean id="wsResponseQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="ws.res.queue"/>
+    </bean>
+
     <!--<amq:queue id="responseQueue" physicalName="res.queue" />-->
     <!--<amq:queue id="errorQueue" physicalName="err.queue" />-->
 
