@@ -11,7 +11,9 @@ import backtype.storm.tuple.Tuple
 class BarCalculatorBolt extends BaseRichBolt {
     private OutputCollector collector
     private Double seedRate = 200.99
+    private Map<Integer, Double> rates
     private Integer homeHotelId
+    private WebBarRateGenerator rateGenerator
 
     BarCalculatorBolt(homeHotelId) {
         this.homeHotelId = homeHotelId
@@ -20,12 +22,15 @@ class BarCalculatorBolt extends BaseRichBolt {
     @Override
     void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
         this.collector = collector
+        this.rateGenerator = new WebBarRateGenerator()
+        rates = [:].withDefault { seedRate }
     }
 
     @Override
     void execute(Tuple input) {
         def id = input.getInteger(0)
         def rate = input.getValue(1)
+        rates[id] = rate
         if(id != homeHotelId)  {
             def newHomeHotelRate = bestAvailableRate(id, rate)
             collector.emit(input, new Values(homeHotelId, newHomeHotelRate))
@@ -42,8 +47,7 @@ class BarCalculatorBolt extends BaseRichBolt {
     }
 
     def bestAvailableRate(id, rate) {
-        def initialRates = [:].withDefault { seedRate }
-        if(!rate) seedRate
-        else rate
+        if(!rate) rates[id]
+        else rateGenerator.generateWebBAR(rates.values() as List)
     }
 }
