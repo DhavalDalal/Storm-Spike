@@ -26,12 +26,13 @@ reqQueue.jmsAcknowledgeMode = Session.CLIENT_ACKNOWLEDGE
 JmsBolt resQueue = new JmsBolt()
 resQueue.jmsProvider = new SpringJmsProvider(spring, 'jmsConnectionFactory', 'wsResponseQueue')
 resQueue.jmsAcknowledgeMode = Session.AUTO_ACKNOWLEDGE
+resQueue.jmsMessageProducer = new TupleJsonJmsMessageProducer()
 
 TopologyBuilder builder = new TopologyBuilder()
 builder.setSpout('jms', reqQueue, 1)
 builder.setBolt('barCalculator', new BarCalculatorBolt(), 2).shuffleGrouping('jms')
 builder.setBolt('jsonWriter', new JsonWriterBolt(), 1).shuffleGrouping('barCalculator')
-builder.setBolt('publisher', resQueue, 2).shuffleGrouping('jsonWriter')
+builder.setBolt('publisher', resQueue, 1).shuffleGrouping('jsonWriter')
 builder.setBolt('show', new ShowBolt(), 1).shuffleGrouping('jsonWriter')
 
 

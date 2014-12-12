@@ -22,8 +22,8 @@ class JsonWriterBolt extends BaseRichBolt {
 
     @Override
     void execute(Tuple input) {
-        def id = input.getString(0)
-        def rate = input.getString(1)
+        def id = input.getInteger(0)
+        def rate = input.getValue(1)
         json(id: id, rate: rate)
         collector.emit(input, new Values(json.toString()))
         collector.ack(input)

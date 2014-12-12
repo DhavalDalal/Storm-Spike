@@ -11,13 +11,13 @@ import javax.jms.Message
 import javax.jms.TextMessage
 
 class JmsJsonTupleProducer implements JmsTupleProducer {
-    def jsonSlurper = new JsonSlurper()
 
     @Override
     public Values toTuple(Message msg) throws JMSException {
         if(msg instanceof TextMessage){
-            String jsonMessage = ((TextMessage) msg).getText()
-            def json = jsonSlurper.parseText(jsonMessage)
+            String jsonMessage = ((TextMessage) msg).text
+            println "Got Message $jsonMessage"
+            def json = new JsonSlurper().parseText(jsonMessage)
             return new Values(json['id'], json['rate'])
         }
         return null
