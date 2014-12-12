@@ -10,6 +10,7 @@ import backtype.storm.tuple.Tuple
 
 class BarCalculatorBolt extends BaseRichBolt {
     private OutputCollector collector
+    private Double seedRate = 200.99
 
     @Override
     void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
@@ -31,6 +32,7 @@ class BarCalculatorBolt extends BaseRichBolt {
     }
 
     def bestAvailableRate(rate) {
-        rate
+        if(!rate) seedRate
+        else rate
     }
 }

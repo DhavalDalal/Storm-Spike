@@ -25,7 +25,7 @@ reqQueue.jmsAcknowledgeMode = Session.CLIENT_ACKNOWLEDGE
 
 JmsBolt resQueue = new JmsBolt()
 resQueue.jmsProvider = new SpringJmsProvider(spring, 'jmsConnectionFactory', 'wsResponseQueue')
-resQueue.jmsAcknowledgeMode = Session.AUTO_ACKNOWLEDGE
+resQueue.jmsAcknowledgeMode = Session.CLIENT_ACKNOWLEDGE
 resQueue.jmsMessageProducer = new TupleJsonJmsMessageProducer()
 
 TopologyBuilder builder = new TopologyBuilder()

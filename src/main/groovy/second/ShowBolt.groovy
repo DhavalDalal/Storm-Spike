@@ -17,6 +17,7 @@ public class ShowBolt extends BaseRichBolt {
     @Override
     public void execute(Tuple input) {
         println(input)
+        collector.ack(input)
     }
 
     @Override
